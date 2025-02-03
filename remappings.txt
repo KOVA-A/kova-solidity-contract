@@ -1,2 +1,3 @@
 @openzeppelin-contracts-5.2.0/=dependencies/@openzeppelin-contracts-5.2.0/
+forge-std-1.9.6/=dependencies/forge-std-1.9.6/
 solady-0.1.3/=dependencies/solady-0.1.3/
