@@ -31,3 +31,12 @@ struct DiamondInitArgs {
     address init;
     bytes initCalldata;
 }
+
+struct AgentData {
+    string name;
+    string description;
+    string model;
+    string userPromptURI;
+    string systemPromptURI;
+    bool promptsEncrypted;
+}
