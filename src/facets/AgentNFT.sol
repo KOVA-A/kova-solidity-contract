@@ -8,10 +8,10 @@ import {IERC165} from "@openzeppelin/contracts/interfaces/IERC165.sol";
 import {IERC7662} from "src/interfaces/IERC7662.sol";
 import "src/libraries/constants/Types.sol";
 
-
 contract AgentNFT is ERC721, ERC721Enumerable, ERC721URIStorage, IERC7662 {
     mapping(uint256 => AgentData) public agentData;
-    constructor() ERC721("AgentNFT","KOVA") {}
+
+    constructor() ERC721("AgentNFT", "KOVA") {}
 
     function mint(AgentData memory _agentData) external {
         uint256 currentTokenId = totalSupply() + 1;
@@ -20,7 +20,12 @@ contract AgentNFT is ERC721, ERC721Enumerable, ERC721URIStorage, IERC7662 {
         _setTokenURI(currentTokenId, _agentData.systemPromptURI);
     }
 
-    function _update(address to, uint256 tokenId, address auth) internal virtual override(ERC721, ERC721Enumerable) returns (address) {
+    function _update(address to, uint256 tokenId, address auth)
+        internal
+        virtual
+        override(ERC721, ERC721Enumerable)
+        returns (address)
+    {
         address previousOwner = ERC721Enumerable._update(to, tokenId, auth);
         return previousOwner;
     }
@@ -29,25 +34,33 @@ contract AgentNFT is ERC721, ERC721Enumerable, ERC721URIStorage, IERC7662 {
         ERC721Enumerable._increaseBalance(account, amount);
     }
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721, ERC721Enumerable, ERC721URIStorage, IERC165) returns (bool) {
-        return interfaceId == type(IERC7662).interfaceId ||
-        interfaceId == type(IERC165).interfaceId ||
-        ERC721.supportsInterface(interfaceId) ||
-        ERC721Enumerable.supportsInterface(interfaceId) ||
-        ERC721URIStorage.supportsInterface(interfaceId) ||
-        super.supportsInterface(interfaceId);
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(ERC721, ERC721Enumerable, ERC721URIStorage, IERC165)
+        returns (bool)
+    {
+        return interfaceId == type(IERC7662).interfaceId || interfaceId == type(IERC165).interfaceId
+            || ERC721.supportsInterface(interfaceId) || ERC721Enumerable.supportsInterface(interfaceId)
+            || ERC721URIStorage.supportsInterface(interfaceId) || super.supportsInterface(interfaceId);
     }
 
     function tokenURI(uint256 tokenId) public view virtual override(ERC721, ERC721URIStorage) returns (string memory) {}
 
-    function getAgentData(uint256 tokenId) external view override returns (
-        string memory name,
-        string memory description,
-        string memory model,
-        string memory userPromptURI,
-        string memory systemPromptURI,
-        bool promptsEncrypted
-    ){
+    function getAgentData(uint256 tokenId)
+        external
+        view
+        override
+        returns (
+            string memory name,
+            string memory description,
+            string memory model,
+            string memory userPromptURI,
+            string memory systemPromptURI,
+            bool promptsEncrypted
+        )
+    {
         AgentData memory agentData_ = agentData[tokenId];
         return (
             agentData_.name,
