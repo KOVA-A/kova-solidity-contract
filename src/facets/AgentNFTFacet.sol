@@ -12,6 +12,18 @@ contract AgentNFTFacet {
         $._symbol = "KOVA";
     }
 
+    function name() external view returns (string memory) {
+        return LibERC721._getERC721Storage()._name;
+    }
+
+    function symbol() external view returns (string memory) {
+        return LibERC721._getERC721Storage()._symbol;
+    }
+
+    function tokenURI(uint256 tokenId) external view returns (string memory) {
+        return LibERC721.tokenURI(tokenId);
+    }
+
     function mint(
         AgentData memory _agentData,
         string memory _agentDetailsURI
@@ -39,7 +51,7 @@ contract AgentNFTFacet {
         external
         view
         returns (
-            string memory name,
+            string memory name_,
             string memory description,
             string memory model,
             string memory userPromptURI,
