@@ -6,12 +6,6 @@ import {LibERC721} from "src/libraries/LibERC721.sol";
 import "src/libraries/constants/Types.sol";
 
 contract AgentNFTFacet {
-    function initialize() external {
-        LibERC721.ERC721Storage storage $ = LibERC721._getERC721Storage();
-        $._name = "AgentNFT";
-        $._symbol = "KOVA";
-    }
-
     function name() external view returns (string memory) {
         return LibERC721._getERC721Storage()._name;
     }

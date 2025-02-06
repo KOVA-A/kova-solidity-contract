@@ -11,14 +11,12 @@ import {IERC4906} from "@openzeppelin/contracts/interfaces/IERC4906.sol";
 import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
 import {IERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol";
 import {IERC721Metadata} from "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
-import {AgentNFTFacet} from "src/facets/AgentNFTFacet.sol";
 import {LibERC721} from "src/libraries/LibERC721.sol";
 
 /// @notice Initialize.
 /// @author KOVA (https://github.com/KOVA-A/solidity-contract)
 /// @author Modified from Nick Mudge (https://github.com/mudgen/diamond-3)
 contract KOVAInit {
-    AgentNFTFacet agentNFTFacet;
     function init() external {
         // adding ERC165 data
         LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
@@ -32,7 +30,9 @@ contract KOVAInit {
         ds.supportedInterfaces[type(IERC721Metadata).interfaceId] = true;
         ds.supportedInterfaces[type(IERC4906).interfaceId] = true;
 
-        agentNFTFacet.initialize();
+        LibERC721.ERC721Storage storage $ = LibERC721._getERC721Storage();
+        $._name = "AgentNFT";
+        $._symbol = "KOVA";
 
         // EIP-2535 specifies that the `diamondCut` function takes two optional
         // arguments: address _init and bytes calldata _calldata
