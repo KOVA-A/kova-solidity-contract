@@ -22,21 +22,13 @@ contract AgentNFTFacet {
         AgentData memory _agentData,
         string memory _agentDetailsURI
     ) external {
-        uint256 currentTokenId = LibERC721.totalSupply() + 1;
-        LibERC721._mint(msg.sender, currentTokenId);
-        LibAgentNFT._getAgentNFTStorage().agentDatas[
-            currentTokenId
-        ] = _agentData;
-        LibERC721._setTokenURI(currentTokenId, _agentDetailsURI);
+        LibAgentNFT.mint(_agentData, _agentDetailsURI);
     }
 
     function getAgentType(
         uint256 agentId
     ) external view returns (AgentType agentType) {
-        agentType = LibAgentNFT
-            ._getAgentNFTStorage()
-            .agentDatas[agentId]
-            .agentType;
+        agentType = LibAgentNFT.getAgentType(agentId);
     }
 
     function getAgentData(
@@ -54,8 +46,7 @@ contract AgentNFTFacet {
         )
     {
         AgentData memory agentData_ = LibAgentNFT
-            ._getAgentNFTStorage()
-            .agentDatas[tokenId];
+            .getAgentData(tokenId);
         return (
             agentData_.name,
             agentData_.description,
