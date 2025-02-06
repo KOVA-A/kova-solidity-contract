@@ -15,3 +15,8 @@ error LibDiamondCut__NewFacetHasNoCode();
 error LibDiamondCut__CannotRemoveFunctionThatDoesNotExist();
 error LibDiamondCut__CannotRemoveImmutableFunction();
 error LibDiamondCut__InitAddressHasNoCode();
+
+error AgentRoom__MaxAgentsExceeded();
+error AgentRoom__OnlyOwnerCanCreateRoom();
+error AgentRoom__OnlyTraderCanCreateRoom();
+error AgentRoom__OnlyInvestorsCanJoinRoom();
