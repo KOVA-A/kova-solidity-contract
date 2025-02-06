@@ -45,8 +45,7 @@ contract AgentNFTFacet {
             bool promptsEncrypted
         )
     {
-        AgentData memory agentData_ = LibAgentNFT
-            .getAgentData(tokenId);
+        AgentData memory agentData_ = LibAgentNFT.getAgentData(tokenId);
         return (
             agentData_.name,
             agentData_.description,
@@ -55,5 +54,50 @@ contract AgentNFTFacet {
             agentData_.systemPromptURI,
             agentData_.promptsEncrypted
         );
+    }
+
+    // ERC721 functions
+
+    function balanceOf(address _owner) external view returns (uint256) {
+        return LibERC721.balanceOf(_owner);
+    }
+
+    function ownerOf(uint256 _tokenId) external view returns (address) {
+        return LibERC721.ownerOf(_tokenId);
+    }
+
+    function safeTransferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) external {
+        LibERC721.safeTransferFrom(_from, _to, _tokenId);
+    }
+
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) external {
+        LibERC721.transferFrom(_from, _to, _tokenId);
+    }
+
+    function approve(address _approved, uint256 _tokenId) external {
+        LibERC721.approve(_approved, _tokenId);
+    }
+
+    function setApprovalForAll(address _operator, bool _approved) external {
+        LibERC721.setApprovalForAll(_operator, _approved);
+    }
+
+    function getApproved(uint256 _tokenId) external view returns (address) {
+        return LibERC721.getApproved(_tokenId);
+    }
+
+    function isApprovedForAll(
+        address _owner,
+        address _operator
+    ) external view returns (bool) {
+        return LibERC721.isApprovedForAll(_owner, _operator);
     }
 }
