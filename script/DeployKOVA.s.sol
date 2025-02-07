@@ -33,15 +33,17 @@ contract DeployKOVA is Script {
     }
 
     function run() public broadcast {
+
         diamondCutFacet = new DiamondCutFacet();
-        console.log("DiamondCutFacet deployed at: ", address(diamondCutFacet));
         diamondLoupeFacet = new DiamondLoupeFacet();
-        console.log("DiamondLoupeFacet deployed at: ", address(diamondLoupeFacet));
         agentRoomFacet = new AgentRoomFacet();
-        console.log("AgentRoomFacet deployed at: ", address(agentRoomFacet));
         agentNFTFacet = new AgentNFTFacet();
-        console.log("AgentNFTFacet deployed at: ", address(agentNFTFacet));
         kovaInit = new KOVAInit();
+        
+        console.log("DiamondCutFacet deployed at: ", address(diamondCutFacet));
+        console.log("DiamondLoupeFacet deployed at: ", address(diamondLoupeFacet));
+        console.log("AgentRoomFacet deployed at: ", address(agentRoomFacet));
+        console.log("AgentNFTFacet deployed at: ", address(agentNFTFacet));
         console.log("KOVAInit deployed at: ", address(kovaInit));
 
         FacetCut[] memory cut = new FacetCut[](4);
@@ -56,27 +58,20 @@ contract DeployKOVA is Script {
         loupeSelectors[3] = IDiamondLoupe.facetAddress.selector;
         loupeSelectors[4] = IERC165.supportsInterface.selector;
 
-        bytes4[] memory agentRoomSelectors = new bytes4[](4);
+        bytes4[] memory agentRoomSelectors = new bytes4[](8);
         agentRoomSelectors[0] = AgentRoomFacet.createRoom.selector;
         agentRoomSelectors[1] = AgentRoomFacet.joinRoom.selector;
         agentRoomSelectors[2] = AgentRoomFacet.leaveRoom.selector;
-        agentRoomSelectors[3] = IERC721Receiver.onERC721Received.selector;
+        agentRoomSelectors[3] = AgentRoomFacet.getRoomParticipant.selector;
+        agentRoomSelectors[4] = AgentRoomFacet.getRoomParticipants.selector;
+        agentRoomSelectors[5] = AgentRoomFacet.getAllRoomParticipants.selector;
+        agentRoomSelectors[6] = AgentRoomFacet.viewAgentRoomStatus.selector;
+        agentRoomSelectors[7] = IERC721Receiver.onERC721Received.selector;
 
-        bytes4[] memory agentNFTSelectors = new bytes4[](14);
-        agentNFTSelectors[0] = AgentNFTFacet.name.selector;
-        agentNFTSelectors[1] = AgentNFTFacet.symbol.selector;
-        agentNFTSelectors[2] = AgentNFTFacet.tokenURI.selector;
-        agentNFTSelectors[3] = AgentNFTFacet.createAgent.selector;
-        agentNFTSelectors[4] = AgentNFTFacet.getAgentType.selector;
-        agentNFTSelectors[5] = AgentNFTFacet.getAgentData.selector;
-        agentNFTSelectors[6] = AgentNFTFacet.balanceOf.selector;
-        agentNFTSelectors[7] = AgentNFTFacet.ownerOf.selector;
-        agentNFTSelectors[8] = AgentNFTFacet.safeTransferFrom.selector;
-        agentNFTSelectors[9] = AgentNFTFacet.transferFrom.selector;
-        agentNFTSelectors[10] = AgentNFTFacet.approve.selector;
-        agentNFTSelectors[11] = AgentNFTFacet.setApprovalForAll.selector;
-        agentNFTSelectors[12] = AgentNFTFacet.getApproved.selector;
-        agentNFTSelectors[13] = AgentNFTFacet.isApprovedForAll.selector;
+        bytes4[] memory agentNFTSelectors = new bytes4[](3);
+        agentNFTSelectors[0] = AgentNFTFacet.createAgent.selector;
+        agentNFTSelectors[1] = AgentNFTFacet.getAgentType.selector;
+        agentNFTSelectors[2] = AgentNFTFacet.getAgentData.selector;
 
         cut[0] = FacetCut({
             facetAddress: address(diamondCutFacet),
