@@ -3,9 +3,7 @@ pragma solidity ^0.8.0;
 
 import {IERC721Receiver} from "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
-import {LibERC721} from "src/libraries/LibERC721.sol";
 import {LibAgentRoom} from "src/libraries/LibAgentRoom.sol";
-import {LibAgentNFT} from "src/libraries/LibAgentNFT.sol";
 
 import "src/libraries/constants/Events.sol";
 import "src/libraries/constants/Errors.sol";
