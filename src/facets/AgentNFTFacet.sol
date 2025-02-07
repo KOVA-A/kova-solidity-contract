@@ -6,22 +6,15 @@ import {LibERC721} from "src/libraries/LibERC721.sol";
 import "src/libraries/constants/Types.sol";
 
 contract AgentNFTFacet {
-    function createAgent(
-        AgentData memory _agentData,
-        string memory _agentDetailsURI
-    ) external {
+    function createAgent(AgentData memory _agentData, string memory _agentDetailsURI) external {
         LibAgentNFT.createAgent(_agentData, _agentDetailsURI);
     }
 
-    function getAgentType(
-        uint256 agentId
-    ) external view returns (AgentType agentType) {
+    function getAgentType(uint256 agentId) external view returns (AgentType agentType) {
         agentType = LibAgentNFT.getAgentType(agentId);
     }
 
-    function getAgentData(
-        uint256 tokenId
-    )
+    function getAgentData(uint256 tokenId)
         external
         view
         returns (

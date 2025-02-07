@@ -26,20 +26,19 @@ contract DeployKOVA is Script {
     KOVAInit kovaInit;
     KOVA kova;
 
-    modifier broadcast {
+    modifier broadcast() {
         vm.startBroadcast();
         _;
         vm.stopBroadcast();
     }
 
     function run() public broadcast {
-
         diamondCutFacet = new DiamondCutFacet();
         diamondLoupeFacet = new DiamondLoupeFacet();
         agentRoomFacet = new AgentRoomFacet();
         agentNFTFacet = new AgentNFTFacet();
         kovaInit = new KOVAInit();
-        
+
         console.log("DiamondCutFacet deployed at: ", address(diamondCutFacet));
         console.log("DiamondLoupeFacet deployed at: ", address(diamondLoupeFacet));
         console.log("AgentRoomFacet deployed at: ", address(agentRoomFacet));
@@ -103,5 +102,4 @@ contract DeployKOVA is Script {
         kova = new KOVA(msg.sender, cut, args);
         console.log("KOVA deployed at: ", address(kova));
     }
-
 }
