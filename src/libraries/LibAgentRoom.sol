@@ -79,12 +79,12 @@ library LibAgentRoom {
         emit RoomLeft(roomId, roomType, agentID);
     }
 
-    function getRoomParticipants(uint256 roomId) public view returns (uint256[] memory) {
-        return _getAgentRoomStorage().roomAgents[roomId];
-    }
-
     function getRoomParticipant(uint256 roomId) public view returns (uint256) {
         return _getAgentRoomStorage().roomAgents2[roomId].get(roomId);
+    }
+
+    function getRoomParticipants(uint256 roomId) public view returns (uint256[] memory) {
+        return _getAgentRoomStorage().roomAgents[roomId];
     }
 
     function getAllRoomParticipants(uint256 roomId) public view returns (uint256[] memory agentIDs) {
@@ -94,6 +94,17 @@ library LibAgentRoom {
             unchecked {
                 ++i;
             }
+        }
+    }
+
+    function viewAgentRoomStatus(uint256 roomId) public view returns (string memory) {
+        uint256 agentRoomLength = _getAgentRoomStorage().roomAgents2[roomId].length();
+        if (agentRoomLength == MAX_AGENTS) {
+            return "In progress";
+        } else if (agentRoomLength == 1) {
+            return "Open";
+        } else {
+            return "Closed";
         }
     }
 }

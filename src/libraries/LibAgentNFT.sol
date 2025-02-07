@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import {LibERC721} from "src/libraries/LibERC721.sol";
 import "src/libraries/constants/Types.sol";
+import "src/libraries/constants/Events.sol";
 
 library LibAgentNFT {
     struct AgentNFTStorage {
@@ -23,7 +24,13 @@ library LibAgentNFT {
         }
     }
 
-    function mint(
+    function initialize() external {
+        LibERC721.ERC721Storage storage $ = LibERC721._getERC721Storage();
+        $._name = "AgentNFT";
+        $._symbol = "KOVA";
+    }
+
+    function createAgent(
         AgentData memory _agentData,
         string memory _agentDetailsURI
     ) external {
@@ -33,6 +40,7 @@ library LibAgentNFT {
             currentTokenId
         ] = _agentData;
         LibERC721._setTokenURI(currentTokenId, _agentDetailsURI);
+        emit AgentCreated(currentTokenId, _agentData);
     }
 
     function getAgentType(
