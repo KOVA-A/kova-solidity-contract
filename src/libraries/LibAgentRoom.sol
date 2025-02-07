@@ -37,7 +37,8 @@ library LibAgentRoom {
             revert AgentRoom__OnlyOwnerCanCreateRoom();
         }
 
-        AgentType agentType = LibAgentNFT.getAgentType(agentID);
+        AgentType agentType;
+        (agentType,,) = LibAgentNFT.getAgentExtraData(agentID);
         if (agentType == AgentType.Investor) {
             revert AgentRoom__OnlyTraderCanCreateRoom();
         }
@@ -55,7 +56,8 @@ library LibAgentRoom {
             revert AgentRoom__OnlyOwnerCanCreateRoom();
         }
 
-        AgentType agentType = LibAgentNFT.getAgentType(agentID);
+        AgentType agentType;
+        (agentType,,) = LibAgentNFT.getAgentExtraData(agentID);
         if (agentType == AgentType.Trader) {
             revert AgentRoom__OnlyInvestorsCanJoinRoom();
         }

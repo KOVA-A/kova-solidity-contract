@@ -40,9 +40,18 @@ struct AgentData {
     string systemPromptURI;
     bool promptsEncrypted;
     AgentType agentType;
+    RiskLevel riskLevel;
+    uint256 investmentAmount;
+    address[] preferredAssets;
 }
 
 enum AgentType {
     Trader,
     Investor
+}
+
+enum RiskLevel {
+    LOW,
+    MEDIUM,
+    HIGH
 }

@@ -69,7 +69,7 @@ contract DeployKOVA is Script {
 
         bytes4[] memory agentNFTSelectors = new bytes4[](3);
         agentNFTSelectors[0] = AgentNFTFacet.createAgent.selector;
-        agentNFTSelectors[1] = AgentNFTFacet.getAgentType.selector;
+        agentNFTSelectors[1] = AgentNFTFacet.getAgentExtraData.selector;
         agentNFTSelectors[2] = AgentNFTFacet.getAgentData.selector;
 
         cut[0] = FacetCut({

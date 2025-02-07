@@ -34,8 +34,14 @@ library LibAgentNFT {
         emit AgentCreated(currentTokenId, _agentData);
     }
 
-    function getAgentType(uint256 agentId) external view returns (AgentType agentType) {
+    function getAgentExtraData(uint256 agentId)
+        external
+        view
+        returns (AgentType agentType, uint256 investmentAmount, address[] memory preferredAssets)
+    {
         agentType = _getAgentNFTStorage().agentDatas[agentId].agentType;
+        investmentAmount = _getAgentNFTStorage().agentDatas[agentId].investmentAmount;
+        preferredAssets = _getAgentNFTStorage().agentDatas[agentId].preferredAssets;
     }
 
     function getAgentData(uint256 tokenId) external view returns (AgentData memory agentData_) {
