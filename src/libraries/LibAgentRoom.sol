@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.0;
 
-import {LibERC721} from "src/libraries/LibERC721.sol";
-import {LibAgentNFT} from "src/libraries/LibAgentNFT.sol";
+import {AgentNFT} from "src/agentNFT/AgentNFT.sol";
 import {EnumerableMap} from "@openzeppelin/contracts/utils/structs/EnumerableMap.sol";
 import "src/libraries/constants/Types.sol";
 import "src/libraries/constants/Errors.sol";
@@ -24,6 +23,8 @@ library LibAgentRoom {
     bytes32 private constant AGENTROOM_STORAGE_LOCATION =
         0x0684d24082dd6910851205f7b7dcea9a01cec5d71b932f67cc926c6c18323c00;
 
+    AgentNFT private constant AGENTNFT = AgentNFT(0xEF78E7D23A02a404D348a0f37ac0fF4D10991D1a);
+
     function _getAgentRoomStorage() internal pure returns (AgentRoomStorage storage $) {
         assembly {
             $.slot := AGENTROOM_STORAGE_LOCATION
@@ -33,12 +34,12 @@ library LibAgentRoom {
     uint256 private constant MAX_AGENTS = 2;
 
     function createRoom(uint8 roomType, uint256 agentID) external returns (uint256 roomId) {
-        if (LibERC721.ownerOf(agentID) != msg.sender) {
+        if (AGENTNFT.ownerOf(agentID) != msg.sender) {
             revert AgentRoom__OnlyOwnerCanCreateRoom();
         }
 
         AgentType agentType;
-        (agentType,,) = LibAgentNFT.getAgentExtraData(agentID);
+        (agentType,,,) = AGENTNFT.getAgentExtraData(agentID);
         if (agentType == AgentType.Investor) {
             revert AgentRoom__OnlyTraderCanCreateRoom();
         }
@@ -52,12 +53,12 @@ library LibAgentRoom {
     }
 
     function joinRoom(uint256 roomId, uint8 roomType, uint256 agentID) public {
-        if (LibERC721.ownerOf(agentID) != msg.sender) {
+        if (AGENTNFT.ownerOf(agentID) != msg.sender) {
             revert AgentRoom__OnlyOwnerCanCreateRoom();
         }
 
         AgentType agentType;
-        (agentType,,) = LibAgentNFT.getAgentExtraData(agentID);
+        (agentType,,,) = AGENTNFT.getAgentExtraData(agentID);
         if (agentType == AgentType.Trader) {
             revert AgentRoom__OnlyInvestorsCanJoinRoom();
         }

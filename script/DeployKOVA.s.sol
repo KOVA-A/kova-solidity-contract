@@ -6,7 +6,6 @@ import {Script, console} from "forge-std/Script.sol";
 import {DiamondCutFacet} from "src/facets/DiamondCutFacet.sol";
 import {DiamondLoupeFacet} from "src/facets/DiamondLoupeFacet.sol";
 import {AgentRoomFacet} from "src/facets/AgentRoomFacet.sol";
-import {AgentNFTFacet} from "src/facets/AgentNFTFacet.sol";
 
 import {IDiamondCut, FacetCut, FacetCutAction} from "src/interfaces/IDiamondCut.sol";
 import {IDiamondLoupe} from "src/interfaces/IDiamondLoupe.sol";
@@ -22,7 +21,6 @@ contract DeployKOVA is Script {
     DiamondCutFacet diamondCutFacet;
     DiamondLoupeFacet diamondLoupeFacet;
     AgentRoomFacet agentRoomFacet;
-    AgentNFTFacet agentNFTFacet;
     KOVAInit kovaInit;
     KOVA kova;
 
@@ -36,16 +34,14 @@ contract DeployKOVA is Script {
         diamondCutFacet = new DiamondCutFacet();
         diamondLoupeFacet = new DiamondLoupeFacet();
         agentRoomFacet = new AgentRoomFacet();
-        agentNFTFacet = new AgentNFTFacet();
         kovaInit = new KOVAInit();
 
         console.log("DiamondCutFacet deployed at: ", address(diamondCutFacet));
         console.log("DiamondLoupeFacet deployed at: ", address(diamondLoupeFacet));
         console.log("AgentRoomFacet deployed at: ", address(agentRoomFacet));
-        console.log("AgentNFTFacet deployed at: ", address(agentNFTFacet));
         console.log("KOVAInit deployed at: ", address(kovaInit));
 
-        FacetCut[] memory cut = new FacetCut[](4);
+        FacetCut[] memory cut = new FacetCut[](3);
 
         bytes4[] memory diamondCutSelectors = new bytes4[](1);
         diamondCutSelectors[0] = DiamondCutFacet.diamondCut.selector;
@@ -67,11 +63,6 @@ contract DeployKOVA is Script {
         agentRoomSelectors[6] = AgentRoomFacet.viewAgentRoomStatus.selector;
         agentRoomSelectors[7] = IERC721Receiver.onERC721Received.selector;
 
-        bytes4[] memory agentNFTSelectors = new bytes4[](3);
-        agentNFTSelectors[0] = AgentNFTFacet.createAgent.selector;
-        agentNFTSelectors[1] = AgentNFTFacet.getAgentExtraData.selector;
-        agentNFTSelectors[2] = AgentNFTFacet.getAgentData.selector;
-
         cut[0] = FacetCut({
             facetAddress: address(diamondCutFacet),
             action: FacetCutAction.Add,
@@ -88,12 +79,6 @@ contract DeployKOVA is Script {
             facetAddress: address(agentRoomFacet),
             action: FacetCutAction.Add,
             functionSelectors: agentRoomSelectors
-        });
-
-        cut[3] = FacetCut({
-            facetAddress: address(agentNFTFacet),
-            action: FacetCutAction.Add,
-            functionSelectors: agentNFTSelectors
         });
 
         DiamondInitArgs memory args =
