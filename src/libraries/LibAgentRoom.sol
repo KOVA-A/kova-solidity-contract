@@ -24,11 +24,7 @@ library LibAgentRoom {
     bytes32 private constant AGENTROOM_STORAGE_LOCATION =
         0x0684d24082dd6910851205f7b7dcea9a01cec5d71b932f67cc926c6c18323c00;
 
-    function _getAgentRoomStorage()
-        internal
-        pure
-        returns (AgentRoomStorage storage $)
-    {
+    function _getAgentRoomStorage() internal pure returns (AgentRoomStorage storage $) {
         assembly {
             $.slot := AGENTROOM_STORAGE_LOCATION
         }
@@ -36,16 +32,15 @@ library LibAgentRoom {
 
     uint256 private constant MAX_AGENTS = 2;
 
-    function createRoom(
-        uint8 roomType,
-        uint256 agentID
-    ) external returns (uint256 roomId) {
-        if (LibERC721.ownerOf(agentID) != msg.sender)
+    function createRoom(uint8 roomType, uint256 agentID) external returns (uint256 roomId) {
+        if (LibERC721.ownerOf(agentID) != msg.sender) {
             revert AgentRoom__OnlyOwnerCanCreateRoom();
+        }
 
         AgentType agentType = LibAgentNFT.getAgentType(agentID);
-        if (agentType == AgentType.Investor)
+        if (agentType == AgentType.Investor) {
             revert AgentRoom__OnlyTraderCanCreateRoom();
+        }
 
         bytes32 roomIdHash = keccak256(abi.encode(agentID, roomType));
 
@@ -56,12 +51,14 @@ library LibAgentRoom {
     }
 
     function joinRoom(uint256 roomId, uint8 roomType, uint256 agentID) public {
-        if (LibERC721.ownerOf(agentID) != msg.sender)
+        if (LibERC721.ownerOf(agentID) != msg.sender) {
             revert AgentRoom__OnlyOwnerCanCreateRoom();
+        }
 
         AgentType agentType = LibAgentNFT.getAgentType(agentID);
-        if (agentType == AgentType.Trader)
+        if (agentType == AgentType.Trader) {
             revert AgentRoom__OnlyInvestorsCanJoinRoom();
+        }
 
         AgentRoomStorage storage $ = _getAgentRoomStorage();
         uint256[] memory agentIDs = $.roomAgents[roomId];
@@ -89,7 +86,7 @@ library LibAgentRoom {
 
     function getAllRoomParticipants(uint256 roomId) public view returns (uint256[] memory agentIDs) {
         uint256 agentRoomLength = _getAgentRoomStorage().roomAgents2[roomId].length();
-        for (uint256 i; i < agentRoomLength; ) {
+        for (uint256 i; i < agentRoomLength;) {
             agentIDs[i] = _getAgentRoomStorage().roomAgents2[roomId].get(i);
             unchecked {
                 ++i;

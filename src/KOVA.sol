@@ -10,7 +10,6 @@ import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {LibERC721} from "src/libraries/LibERC721.sol";
 import {LibDiamond} from "src/libraries/LibDiamond.sol";
 
-
 /// @notice KOVA is a diamond contract that inherits from Diamond.
 /// @author KOVA (https://github.com/KOVA-A/solidity-contract)
 contract KOVA is Diamond, IERC721 {
@@ -42,28 +41,15 @@ contract KOVA is Diamond, IERC721 {
         return LibERC721.ownerOf(_tokenId);
     }
 
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId,
-        bytes memory data
-    ) external {
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) external {
         LibERC721.safeTransferFrom(from, to, tokenId, data);
     }
 
-    function safeTransferFrom(
-        address _from,
-        address _to,
-        uint256 _tokenId
-    ) external {
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId) external {
         LibERC721.safeTransferFrom(_from, _to, _tokenId);
     }
 
-    function transferFrom(
-        address _from,
-        address _to,
-        uint256 _tokenId
-    ) external {
+    function transferFrom(address _from, address _to, uint256 _tokenId) external {
         LibERC721.transferFrom(_from, _to, _tokenId);
     }
 
@@ -79,10 +65,7 @@ contract KOVA is Diamond, IERC721 {
         return LibERC721.getApproved(_tokenId);
     }
 
-    function isApprovedForAll(
-        address _owner,
-        address _operator
-    ) external view returns (bool) {
+    function isApprovedForAll(address _owner, address _operator) external view returns (bool) {
         return LibERC721.isApprovedForAll(_owner, _operator);
     }
 

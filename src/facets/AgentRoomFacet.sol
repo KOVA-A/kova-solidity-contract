@@ -12,10 +12,7 @@ import "src/libraries/constants/Errors.sol";
 import "src/libraries/constants/Types.sol";
 
 contract AgentRoomFacet is IERC721Receiver {
-    function createRoom(
-        uint8 roomType,
-        uint256 agentID
-    ) external returns (uint256 roomId) {
+    function createRoom(uint8 roomType, uint256 agentID) external returns (uint256 roomId) {
         return LibAgentRoom.createRoom(roomType, agentID);
     }
 
@@ -23,11 +20,7 @@ contract AgentRoomFacet is IERC721Receiver {
         LibAgentRoom.joinRoom(roomId, roomType, agentID);
     }
 
-    function leaveRoom(
-        uint256 roomId,
-        uint8 roomType,
-        uint256 agentID
-    ) public {
+    function leaveRoom(uint256 roomId, uint8 roomType, uint256 agentID) public {
         LibAgentRoom.leaveRoom(roomId, roomType, agentID);
     }
 
