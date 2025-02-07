@@ -39,4 +39,10 @@ struct AgentData {
     string userPromptURI;
     string systemPromptURI;
     bool promptsEncrypted;
+    AgentType agentType;
+}
+
+enum AgentType {
+    Trader,
+    Investor
 }

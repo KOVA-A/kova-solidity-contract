@@ -6,14 +6,19 @@ import {IDiamondLoupe} from "src/interfaces/IDiamondLoupe.sol";
 import {IDiamondCut} from "src/interfaces/IDiamondCut.sol";
 import {IERC7662} from "src/interfaces/IERC7662.sol";
 import {IERC165} from "@openzeppelin/contracts/interfaces/IERC165.sol";
+import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import {IERC4906} from "@openzeppelin/contracts/interfaces/IERC4906.sol";
 import {IAccessControl} from "@openzeppelin/contracts/access/IAccessControl.sol";
 import {IERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol";
+import {IERC721Metadata} from "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
+import {IERC721Receiver} from "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import {LibAgentNFT} from "src/libraries/LibAgentNFT.sol";
 
 /// @notice Initialize.
 /// @author KOVA (https://github.com/KOVA-A/solidity-contract)
 /// @author Modified from Nick Mudge (https://github.com/mudgen/diamond-3)
-contract ERC165Init {
-    function init() external {
+contract KOVAInit {
+    function init() public {
         // adding ERC165 data
         LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
         ds.supportedInterfaces[type(IERC165).interfaceId] = true;
@@ -21,7 +26,14 @@ contract ERC165Init {
         ds.supportedInterfaces[type(IDiamondLoupe).interfaceId] = true;
         ds.supportedInterfaces[type(IAccessControl).interfaceId] = true;
         ds.supportedInterfaces[type(IERC7662).interfaceId] = true;
+        ds.supportedInterfaces[type(IERC721).interfaceId] = true;
         ds.supportedInterfaces[type(IERC721Enumerable).interfaceId] = true;
+        ds.supportedInterfaces[type(IERC721Metadata).interfaceId] = true;
+        ds.supportedInterfaces[type(IERC4906).interfaceId] = true;
+        ds.supportedInterfaces[type(IERC721Receiver).interfaceId] = true;
+
+        // adding ERC721 data
+        LibAgentNFT.initialize();
 
         // EIP-2535 specifies that the `diamondCut` function takes two optional
         // arguments: address _init and bytes calldata _calldata
