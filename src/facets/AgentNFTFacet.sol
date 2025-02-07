@@ -10,8 +10,8 @@ contract AgentNFTFacet {
         LibAgentNFT.createAgent(_agentData, _agentDetailsURI);
     }
 
-    function getAgentType(uint256 agentId) external view returns (AgentType agentType) {
-        agentType = LibAgentNFT.getAgentType(agentId);
+    function getAgentExtraData(uint256 agentId) external view returns (AgentType, uint256, address[] memory) {
+        return LibAgentNFT.getAgentExtraData(agentId);
     }
 
     function getAgentData(uint256 tokenId)
