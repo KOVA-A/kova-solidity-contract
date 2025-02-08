@@ -58,7 +58,7 @@ contract AgentRoom is Ownable, IERC721Receiver {
     }
 
     function joinRoom(uint256 roomId, uint256 agentID) public {
-        if (AGENTNFT.ownerOf(agentID) != msg.sender) {
+        if (agentNFT.ownerOf(agentID) != msg.sender) {
             revert AgentRoom__OnlyOwnerCanCreateRoom();
         }
 
@@ -85,7 +85,7 @@ contract AgentRoom is Ownable, IERC721Receiver {
         if (roomParticipants[agentID][roomId] != msg.sender) revert AgentRoom__OnlyOwnerCanLeaveRoom();
         roomParticipants[agentID][roomId] = address(0);
 
-        AGENTNFT.safeTransferFrom(address(this), msg.sender, agentID);
+        agentNFT.safeTransferFrom(address(this), msg.sender, agentID);
         emit RoomLeft(roomId, agentID);
     }
 
