@@ -20,3 +20,4 @@ error AgentRoom__MaxAgentsExceeded();
 error AgentRoom__OnlyOwnerCanCreateRoom();
 error AgentRoom__OnlyTraderCanCreateRoom();
 error AgentRoom__OnlyInvestorsCanJoinRoom();
+error AgentRoom__OnlyOwnerCanLeaveRoom();

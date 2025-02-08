@@ -1,23 +1,37 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.0;
 
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {ERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import {ERC6551Registry} from "erc6551-reference/ERC6551Registry.sol";
+import {IERC6551Registry} from "erc6551-reference/interfaces/IERC6551Registry.sol";
 import {IERC165} from "@openzeppelin/contracts/interfaces/IERC165.sol";
 import {IERC7662} from "src/interfaces/IERC7662.sol";
 import "src/libraries/constants/Types.sol";
 
-contract AgentNFT is ERC721, ERC721Enumerable, ERC721URIStorage, IERC7662 {
+contract AgentNFT is Ownable, ERC721, ERC721Enumerable, ERC721URIStorage, IERC7662 {
+    address private agentRoom;
+    address private constant ERC6551RegistryAddress = 0x000000006551c19487814612e58FE06813775758;
+    address private constant ERC6551AccountProxyAddress = 0x55266d75D1a14E4572138116aF39863Ed6596E7F;
     mapping(uint256 => AgentData) public agentData;
 
-    constructor() ERC721("AgentNFT", "KOVA") {}
+    constructor(address initialOwner) ERC721("AgentNFT", "KOVA") Ownable(initialOwner) {}
 
-    function mint(AgentData memory _agentData) external {
+    function setAgentRoom(address _agentRoom) external onlyOwner {
+        agentRoom = _agentRoom;
+    }
+
+    function mint(AgentData memory _agentData) external returns (address tbaAddress) {
         uint256 currentTokenId = totalSupply() + 1;
         _mint(msg.sender, currentTokenId);
         agentData[currentTokenId] = _agentData;
         _setTokenURI(currentTokenId, _agentData.systemPromptURI);
+        approve(agentRoom, currentTokenId);
+        tbaAddress = IERC6551Registry(ERC6551RegistryAddress).createAccount(
+            ERC6551AccountProxyAddress, bytes32(currentTokenId), block.chainid, address(this), currentTokenId
+        );
     }
 
     function _update(address to, uint256 tokenId, address auth)
@@ -46,7 +60,9 @@ contract AgentNFT is ERC721, ERC721Enumerable, ERC721URIStorage, IERC7662 {
             || ERC721URIStorage.supportsInterface(interfaceId) || super.supportsInterface(interfaceId);
     }
 
-    function tokenURI(uint256 tokenId) public view virtual override(ERC721, ERC721URIStorage) returns (string memory) {}
+    function tokenURI(uint256 tokenId) public view virtual override(ERC721, ERC721URIStorage) returns (string memory) {
+        return ERC721URIStorage.tokenURI(tokenId);
+    }
 
     function getAgentData(uint256 tokenId)
         external
