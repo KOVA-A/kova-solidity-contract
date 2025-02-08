@@ -14,19 +14,15 @@ contract AgentRoomFacet is IERC721Receiver {
 
     uint256 private constant MAX_AGENTS = 2;
 
-    AgentNFT private constant AGENTNFT =
-        AgentNFT(0xEF78E7D23A02a404D348a0f37ac0fF4D10991D1a);
+    AgentNFT private constant AGENTNFT = AgentNFT(0xEF78E7D23A02a404D348a0f37ac0fF4D10991D1a);
 
-    function createRoom(
-        uint8 roomType,
-        uint256 agentID
-    ) external returns (uint256 roomId) {
+    function createRoom(uint8 roomType, uint256 agentID) external returns (uint256 roomId) {
         if (AGENTNFT.ownerOf(agentID) != msg.sender) {
             revert AgentRoom__OnlyOwnerCanCreateRoom();
         }
 
         AgentType agentType;
-        (agentType, , , ) = AGENTNFT.getAgentExtraData(agentID);
+        (agentType,,,) = AGENTNFT.getAgentExtraData(agentID);
         if (agentType == AgentType.Investor) {
             revert AgentRoom__OnlyTraderCanCreateRoom();
         }
@@ -45,7 +41,7 @@ contract AgentRoomFacet is IERC721Receiver {
         }
 
         AgentType agentType;
-        (agentType, , , ) = AGENTNFT.getAgentExtraData(agentID);
+        (agentType,,,) = AGENTNFT.getAgentExtraData(agentID);
         if (agentType == AgentType.Trader) {
             revert AgentRoom__OnlyInvestorsCanJoinRoom();
         }
@@ -70,19 +66,13 @@ contract AgentRoomFacet is IERC721Receiver {
         return LibAgentRoom._getAgentRoomStorage().roomAgents2[roomId].get(roomId);
     }
 
-    function getRoomParticipants(
-        uint256 roomId
-    ) public view returns (uint256[] memory) {
+    function getRoomParticipants(uint256 roomId) public view returns (uint256[] memory) {
         return LibAgentRoom._getAgentRoomStorage().roomAgents[roomId];
     }
 
-    function getAllRoomParticipants(
-        uint256 roomId
-    ) public view returns (uint256[] memory agentIDs) {
-        uint256 agentRoomLength = LibAgentRoom._getAgentRoomStorage()
-            .roomAgents2[roomId]
-            .length();
-        for (uint256 i; i < agentRoomLength; ) {
+    function getAllRoomParticipants(uint256 roomId) public view returns (uint256[] memory agentIDs) {
+        uint256 agentRoomLength = LibAgentRoom._getAgentRoomStorage().roomAgents2[roomId].length();
+        for (uint256 i; i < agentRoomLength;) {
             agentIDs[i] = LibAgentRoom._getAgentRoomStorage().roomAgents2[roomId].get(i);
             unchecked {
                 ++i;
@@ -90,12 +80,8 @@ contract AgentRoomFacet is IERC721Receiver {
         }
     }
 
-    function viewAgentRoomStatus(
-        uint256 roomId
-    ) public view returns (string memory) {
-        uint256 agentRoomLength = LibAgentRoom._getAgentRoomStorage()
-            .roomAgents2[roomId]
-            .length();
+    function viewAgentRoomStatus(uint256 roomId) public view returns (string memory) {
+        uint256 agentRoomLength = LibAgentRoom._getAgentRoomStorage().roomAgents2[roomId].length();
         if (agentRoomLength == MAX_AGENTS) {
             return "In progress";
         } else if (agentRoomLength == 1) {
@@ -110,12 +96,7 @@ contract AgentRoomFacet is IERC721Receiver {
      *
      * Always returns `IERC721Receiver.onERC721Received.selector`.
      */
-    function onERC721Received(
-        address,
-        address,
-        uint256,
-        bytes memory
-    ) public virtual returns (bytes4) {
+    function onERC721Received(address, address, uint256, bytes memory) public virtual returns (bytes4) {
         return this.onERC721Received.selector;
     }
 }
