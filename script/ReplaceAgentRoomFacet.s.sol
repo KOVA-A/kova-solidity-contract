@@ -66,8 +66,7 @@ contract ReplaceAgentRoomFacet is Script {
             functionSelectors: agentRoomSelectorsOld
         });
 
-        DiamondInitArgs memory args =
-            DiamondInitArgs({init: address(0), initCalldata: ""});
+        DiamondInitArgs memory args = DiamondInitArgs({init: address(0), initCalldata: ""});
 
         kova = new KOVA(msg.sender, cut, args);
 
