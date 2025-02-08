@@ -6,7 +6,7 @@ import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {ERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import {ERC6551Registry} from "erc6551-reference/ERC6551Registry.sol";
-import {IERC6551Registry} from "erc6551-reference/interfaces/ERC6551Registry.sol";
+import {IERC6551Registry} from "erc6551-reference/interfaces/IERC6551Registry.sol";
 import {IERC165} from "@openzeppelin/contracts/interfaces/IERC165.sol";
 import {IERC7662} from "src/interfaces/IERC7662.sol";
 import "src/libraries/constants/Types.sol";
