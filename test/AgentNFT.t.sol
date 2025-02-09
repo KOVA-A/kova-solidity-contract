@@ -29,9 +29,7 @@ contract AgentNFTTest is Test {
         // Setup ERC6551 Account implementation and proxy
         ERC6551Account implementation = new ERC6551Account();
         bytes memory proxyCode = abi.encodePacked(
-            hex"3d602d80600a3d3981f3363d3d373d3d3d363d73",
-            implementation,
-            hex"5af43d82803e903d91602b57fd5bf3"
+            hex"3d602d80600a3d3981f3363d3d373d3d3d363d73", implementation, hex"5af43d82803e903d91602b57fd5bf3"
         );
         vm.etch(ERC6551_ACCOUNT_PROXY_ADDRESS, proxyCode);
 
@@ -96,11 +94,7 @@ contract AgentNFTTest is Test {
         bytes32 salt = bytes32(uint256(1));
         // bytes32 _salt = keccak256(abi.encode(salt, block.chainid, address(agentNFT), 1));
         address expectedTBA = IERC6551Registry(ERC6551_REGISTRY_ADDRESS).account(
-            ERC6551_ACCOUNT_PROXY_ADDRESS,
-            salt,
-            block.chainid,
-            address(agentNFT),
-            1
+            ERC6551_ACCOUNT_PROXY_ADDRESS, salt, block.chainid, address(agentNFT), 1
         );
         assertEq(tbaAddress, expectedTBA, "TBA address mismatch");
     }
