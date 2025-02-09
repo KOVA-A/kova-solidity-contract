@@ -9,7 +9,7 @@ contract Deploy is Script {
     AgentNFT agentNFT;
     AgentRoom agentRoom;
 
-    modifier broadcast {
+    modifier broadcast() {
         vm.startBroadcast();
         _;
         vm.stopBroadcast();
