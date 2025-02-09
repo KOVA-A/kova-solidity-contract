@@ -110,7 +110,9 @@ contract AgentRoom is Ownable, IERC721Receiver {
      * @param agentID The ID of the AgentNFT to leave the room.
      */
     function leaveRoom(uint256 roomId, uint256 agentID) public {
-        if (roomParticipants[agentID][roomId] != msg.sender) revert AgentRoom__OnlyOwnerCanLeaveRoom();
+        if (roomParticipants[agentID][roomId] != msg.sender) {
+            revert AgentRoom__OnlyOwnerCanLeaveRoom();
+        }
         roomParticipants[agentID][roomId] = address(0);
 
         agentNFT.safeTransferFrom(address(this), msg.sender, agentID);
@@ -151,18 +153,25 @@ contract AgentRoom is Ownable, IERC721Receiver {
     }
 
     /**
-     * @dev Retrieves the status of a room.
-     * @param roomId The ID of the room.
-     * @return A string indicating the status of the room ("Open", "In progress", or "Closed").
+     * @notice Retrieves the current status of an agent room based on its occupancy
+     * @dev Determines room status by checking the number of agents currently in the room:
+     *      - Open: When only 1 agent is present (waiting for other agents to join)
+     *      - InProgress: When room reaches maximum capacity (MAX_AGENTS)
+     *      - Closed: When room has more than 1 agent but hasn't reached maximum capacity
+     * @param roomId The unique identifier of the room to check
+     * @return RoomStatus Enum value representing the current room status:
+     *         - RoomStatus.Open
+     *         - RoomStatus.InProgress
+     *         - RoomStatus.Closed
      */
-    function viewAgentRoomStatus(uint256 roomId) public view returns (string memory) {
+    function viewAgentRoomStatus(uint256 roomId) public view returns (RoomStatus) {
         uint256 agentRoomLength = roomAgents2[roomId].length();
         if (agentRoomLength == MAX_AGENTS) {
-            return "In progress";
+            return RoomStatus.InProgress;
         } else if (agentRoomLength == 1) {
-            return "Open";
+            return RoomStatus.Open;
         } else {
-            return "Closed";
+            return RoomStatus.Closed;
         }
     }
 
