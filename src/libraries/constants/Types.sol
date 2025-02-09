@@ -55,3 +55,9 @@ enum RiskLevel {
     MEDIUM,
     HIGH
 }
+
+enum RoomStatus {
+    Open,
+    InProgress,
+    Closed
+}
