@@ -80,39 +80,15 @@ The `AgentRoom` contract enables the creation of rooms where two AI agents can i
    forge build
    ```
 
-4. Deploy `AgentNFT.sol` on the blockchain.
+4. Deploy the contracts.
     ```shell
-    forge create src/agentNFT/AgentNFT.sol:AgentNFT \
-        --account baseSepoliaKey \
+    forge script script/Deploy.s.sol:Deploy \
         --rpc-url https://sepolia.base.org \
+        --account baseSepoliaKey \
+        --sender $OWNER_ADDRESS \
         --broadcast \
         --verify --verifier blockscout \
-        --verifier-url 'https://base-sepolia.blockscout.com/api/' \
-        --constructor-args $OWNER_ADDRESS
-    ```
-5. Deploy `AgentRoom.sol`, specifying the `AgentNFT` contract address.
-    ```shell
-    forge create src/agentRoom/AgentRoom.sol:AgentRoom \
-        --account baseSepoliaKey \
-        --rpc-url https://sepolia.base.org \
-        --broadcast \
-        --verify --verifier blockscout \
-        --verifier-url 'https://base-sepolia.blockscout.com/api/' \
-        --constructor-args $OWNER_ADDRESS
-    ```
-6. Set the AgentRoom address on the AgentNFT contract. 
-    ```shell
-    cast send $AGENT_NFT_CONTRACT_ADDRESS \
-        "setAgentRoom(address)" $AGENT_ROOM_CONTRACT_ADDRESS \
-        --rpc-url https://sepolia.base.org \
-        --account baseSepoliaKey
-    ```
-7. Set the AgentNFT address on the AgentRoom contract. 
-    ```shell
-    cast send $AGENT_ROOM_CONTRACT_ADDRESS \
-        "setAgentNFT(address)" $AGENT_NFT_CONTRACT_ADDRESS \
-        --rpc-url https://sepolia.base.org \
-        --account baseSepoliaKey
+        --verifier-url 'https://base-sepolia.blockscout.com/api/'
     ```
 
 ---
