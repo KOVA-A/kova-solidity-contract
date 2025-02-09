@@ -16,6 +16,10 @@ contract Deploy is Script {
     }
 
     function run() public broadcast {
+        deploy();
+    }
+
+    function deploy() public returns (AgentNFT, AgentRoom) {
         agentNFT = new AgentNFT(msg.sender);
         agentRoom = new AgentRoom(msg.sender);
 
@@ -24,5 +28,7 @@ contract Deploy is Script {
 
         console.log("AgentNFT deployed at: ", address(agentNFT));
         console.log("AgentRoom deployed at: ", address(agentRoom));
+
+        return (agentNFT, agentRoom);
     }
 }
